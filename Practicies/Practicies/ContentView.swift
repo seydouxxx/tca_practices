@@ -6,11 +6,24 @@
 //
 
 import SwiftUI
+import ComposableArchitecture
 
 struct ContentView: View {
-    var body: some View {
-//      AddToCartButton(store: .init(initialState: .init(), reducer: AddToCart()))
-      ProductCellView(store: .init(initialState: .init(product: ProductModel.sample[0]), reducer: Product()._printChanges()))
-    }
+  var body: some View {
+    //      ProductCellView(
+    //        store: StoreOf<Product>(
+    //          initialState: Product.State(id: UUID(), product: ProductModel.sample[0])) {
+    //          Product()
+    //        }
+    //      )
+    ProductsListView(
+      store: StoreOf<ProductsList>(
+        initialState: ProductsList.State(),
+        reducer: {
+          ProductsList(fecthProducts: { ProductModel.sample })._printChanges()
+        }
+      )
+    )
+  }
 }
 

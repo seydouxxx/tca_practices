@@ -11,13 +11,14 @@ public struct AddToCart {
   
   
 }
-extension AddToCart: ReducerProtocol {
-  public var body: some ReducerProtocolOf<Self> {
+extension AddToCart: Reducer {
+  public var body: some ReducerOf<Self> {
     
     Reduce { state, action in
       switch action {
       case .didTapPlusButton:
         state.count += 1
+        print("@222222")
         return .none
       case .didTapMinusButton:
         state.count -= 1

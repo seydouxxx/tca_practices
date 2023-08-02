@@ -8,10 +8,9 @@
 import Foundation
 
 public extension Product {
-  struct State: Equatable {
-    
+  struct State: Equatable, Identifiable {
+    public var id: UUID
     var addToCartState = AddToCart.State()
-    
     let product: ProductModel
   }
 }

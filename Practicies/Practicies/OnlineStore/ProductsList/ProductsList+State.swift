@@ -6,9 +6,10 @@
 //
 
 import Foundation
+import ComposableArchitecture
 
 public extension ProductsList {
   struct State: Equatable {
-    var products: [Product.State] = []
+    var products: IdentifiedArrayOf<Product.State> = []
   }
 }

@@ -50,6 +50,12 @@ extension ProductCellView: View {
 
 struct ProductCellView_Previews: PreviewProvider {
     static var previews: some View {
-      ProductCellView(store: .init(initialState: .init(product: ProductModel.sample[0]), reducer: Product()))
+//      ProductCellView(store: .init(initialState: .init(product: ProductModel.sample[0]), reducer: Product()))
+      ProductCellView(
+        store: StoreOf<Product>(
+          initialState: Product.State(id: UUID(), product: ProductModel.sample[0])) {
+          Product()
+        }
+      )
     }
 }
