@@ -19,18 +19,38 @@ public struct ProductsListView {
 extension ProductsListView: View {
   public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
-      List {
-        ForEachStore(
-          store.scope(
-            state: \.products,
-            action: ProductsList.Action.product(id:action:)
+      NavigationStack {
+        List {
+          ForEachStore(
+            store.scope(
+              state: \.products,
+              action: ProductsList.Action.product(id:action:)
+            )
+          ) {
+            ProductCellView(store: $0)
+          }
+        }
+        .task {
+          viewStore.send(.fetchProducts)
+        }
+        .navigationTitle("Products")
+        .toolbar {
+          ToolbarItem(placement: .topBarTrailing) {
+            Button {
+              viewStore.send(.openCart)
+            } label: {
+              Text("Go to Cart")
+            }
+          }
+        }
+        .sheet(
+          isPresented: viewStore.binding(
+            get: \.shouldOpenCart,
+            send: .openCart
           )
         ) {
-          ProductCellView(store: $0)
+          CartListView()
         }
-      }
-      .task {
-        viewStore.send(.fetchProducts)
       }
     }
   }

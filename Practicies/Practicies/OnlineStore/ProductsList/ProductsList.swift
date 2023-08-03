@@ -39,6 +39,9 @@ extension ProductsList: Reducer {
         print(error.localizedDescription)
         print("Unable to fetch products")
         return .none
+      case .openCart:
+        state.shouldOpenCart = true
+        return .none
       case .product:
         return .none
       }
