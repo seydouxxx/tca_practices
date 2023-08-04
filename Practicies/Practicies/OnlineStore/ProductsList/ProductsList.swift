@@ -39,16 +39,43 @@ extension ProductsList: Reducer {
         print(error.localizedDescription)
         print("Unable to fetch products")
         return .none
-      case .openCart:
-        state.shouldOpenCart = true
+      case .setCart(let isPresented):
+        state.shouldOpenCart = isPresented
+        state.cartState = isPresented
+        ? CartList.State(
+          cartItem: IdentifiedArray(
+            uniqueElements: state.products
+              .compactMap {
+                $0.addToCartState.count > 0
+                ? CartItem.State(
+                  id: UUID(),
+                  cartItem: CartItemModel(
+                    product: $0.product,
+                    quantity: $0.count
+                  )
+                )
+                : nil
+              }
+          )
+        )
+        : nil
         return .none
       case .product:
+        return .none
+      case .cart(let action):
+        switch action {
+        case .didPressCloseButton:
+          print("didPressClosebutton")
+          state.shouldOpenCart = false
+        }
         return .none
       }
     }
     .forEach(\.products, action: /Action.product(id:action:)) {
       Product()
     }
-    
+    .ifLet(\.cartState, action: /Action.cart) {
+      CartList()
+    }
   }
 }

@@ -12,5 +12,10 @@ public extension Product {
     public var id: UUID
     var addToCartState = AddToCart.State()
     let product: ProductModel
+    
+    var count: Int {
+      get { addToCartState.count }
+      set { addToCartState.count = newValue }
+    }
   }
 }

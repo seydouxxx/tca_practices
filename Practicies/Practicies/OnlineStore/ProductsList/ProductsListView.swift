@@ -37,7 +37,7 @@ extension ProductsListView: View {
         .toolbar {
           ToolbarItem(placement: .topBarTrailing) {
             Button {
-              viewStore.send(.openCart)
+              viewStore.send(.setCart(isPresented: true))
             } label: {
               Text("Go to Cart")
             }
@@ -46,10 +46,19 @@ extension ProductsListView: View {
         .sheet(
           isPresented: viewStore.binding(
             get: \.shouldOpenCart,
-            send: .openCart
+            send: ProductsList.Action.setCart(isPresented:)
           )
         ) {
-          CartListView()
+          IfLetStore(
+            store.scope(
+              state: \.cartState,
+              action: ProductsList.Action.cart
+            )) {
+              CartListView(store: $0)
+            }
+//          CartListView(
+//            store: store.scope(state: \.cartState, action: ProductsList.Action.cart)
+//          )
         }
       }
     }

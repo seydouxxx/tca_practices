@@ -11,7 +11,9 @@ public extension ProductsList {
   enum Action: Equatable {
     case fetchProducts
     case responseProducts(TaskResult<[ProductModel]>)
-    case openCart
+    case setCart(isPresented: Bool)
+    
     case product(id: Product.State.ID, action: Product.Action)
+    case cart(CartList.Action)
   }
 }
