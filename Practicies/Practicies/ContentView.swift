@@ -8,6 +8,10 @@
 import SwiftUI
 import ComposableArchitecture
 
+struct CustomError: Error {
+  
+}
+
 struct ContentView: View {
   var body: some View {
     //      ProductCellView(
@@ -20,7 +24,11 @@ struct ContentView: View {
       store: StoreOf<ProductsList>(
         initialState: ProductsList.State(),
         reducer: {
-          ProductsList(fecthProducts: { ProductModel.sample })._printChanges()
+          ProductsList(
+            fecthProducts: { ProductModel.sample },
+            sendOrder: { _ in "OK" }
+//            sendOrder: { _ in throw CustomError() }
+          )._printChanges()
         }
       )
     )

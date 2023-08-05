@@ -11,6 +11,7 @@ import Foundation
 public struct ProductsList {
   
   var fecthProducts: () async throws -> [ProductModel]
+  var sendOrder: ([CartItemModel]) async throws -> String
   
 }
 
@@ -65,8 +66,13 @@ extension ProductsList: Reducer {
       case .cart(let action):
         switch action {
         case .didPressCloseButton:
-          print("didPressClosebutton")
           state.shouldOpenCart = false
+        case .dismissSuccessAlert:
+          for id in state.products.map(\.id) {
+            state.products[id: id]?.count = 0
+          }
+          state.shouldOpenCart = false
+          return .none
         case .cartItem(_, let action):
           switch action {
           case .deleteCartItem(let product):
@@ -76,6 +82,7 @@ extension ProductsList: Reducer {
             let productStateId = state.products[index].id
             state.products[id: productStateId]?.count = 0
           }
+        default: return .none
         }
         return .none
       }
@@ -84,7 +91,7 @@ extension ProductsList: Reducer {
       Product()
     }
     .ifLet(\.cartState, action: /Action.cart) {
-      CartList()
+      CartList(sendOrder: sendOrder)
     }
   }
 }
