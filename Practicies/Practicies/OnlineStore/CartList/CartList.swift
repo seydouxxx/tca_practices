@@ -19,7 +19,11 @@ extension CartList: Reducer {
       switch action {
       case .didPressCloseButton:
         return .none
-      case .cartItem:
+      case .cartItem(let id, let action):
+        switch action {
+        case .deleteCartItem:
+          state.cartItem.remove(id: id)
+        }
         return .none
       }
     }

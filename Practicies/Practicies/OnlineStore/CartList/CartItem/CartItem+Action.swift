@@ -9,6 +9,6 @@ import Foundation
 
 extension CartItem {
   public enum Action: Equatable {
-    
+    case deleteCartItem(product: ProductModel)
   }
 }

@@ -43,14 +43,31 @@ extension CartItemCellView: View {
             }
           }
         }
-        Group {
-          Text("Quantity: ")
-          +
-          Text("\(viewStore.cartItem.quantity)")
-            .fontWeight(.bold)
+        ZStack {
+          Group {
+            Text("Quantity: ")
+            +
+            Text("\(viewStore.cartItem.quantity)")
+              .fontWeight(.bold)
+          }
+          .font(.body)
+          
+          HStack {
+            Spacer()
+            Button {
+              viewStore.send(.deleteCartItem(
+                product: viewStore.cartItem.product
+              ))
+            } label: {
+              Image(systemName: "trash.fill")
+                .foregroundColor(.red)
+                .padding()
+            }
+          }
         }
-        .font(.body)
       }
+      .font(.body)
+      .padding([.bottom, .top], 10)
     }
   }
 }

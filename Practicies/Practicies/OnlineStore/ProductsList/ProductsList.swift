@@ -67,6 +67,15 @@ extension ProductsList: Reducer {
         case .didPressCloseButton:
           print("didPressClosebutton")
           state.shouldOpenCart = false
+        case .cartItem(_, let action):
+          switch action {
+          case .deleteCartItem(let product):
+            guard let index = state.products.firstIndex(
+              where: { $0.product.id == product.id })
+            else { return .none }
+            let productStateId = state.products[index].id
+            state.products[id: productStateId]?.count = 0
+          }
         }
         return .none
       }
